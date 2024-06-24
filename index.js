@@ -14,18 +14,18 @@ const PORT = process.env.PORT || 3000;
 
 
 //Modificar CORS para prod
-app.use(cors({
-  origin: 'http://localhost:8100', // Permite solicitudes solo desde este origen
-  credentials: true // Permite el envío de cookies y credenciales de autenticación
-}));
-
-
 // app.use(cors({
-//   origin: "*", // Permite solicitudes desde cualquier origen
-//   credentials: true,
-//   methods: ["GET", "POST", "PUT", "DELETE"],
-//   allowedHeaders: ["Content-Type", "Authorization"]
+//   origin: 'http://localhost:8100', // Permite solicitudes solo desde este origen
+//   credentials: true // Permite el envío de cookies y credenciales de autenticación
 // }));
+
+
+app.use(cors({
+  origin: "*", // Permite solicitudes desde cualquier origen
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 
 admin.initializeApp({
