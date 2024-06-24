@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
+const cors = require('cors');
 
 dotenv.config();
 
@@ -10,6 +11,22 @@ const serviceAccount = require(process.env.SERVICE_ACCOUNT);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+
+//Modificar CORS para prod
+app.use(cors({
+  origin: 'http://localhost:8100', // Permite solicitudes solo desde este origen
+  credentials: true // Permite el envío de cookies y credenciales de autenticación
+}));
+
+
+// app.use(cors({
+//   origin: "*", // Permite solicitudes desde cualquier origen
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization"]
+// }));
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -108,7 +125,7 @@ app.post("/enviar-email", async (req, res) => {
     res.json({ ...resultado, seEnvio: true });
   } catch (e) {
     res.json({
-      mensaje: "No se pudo enviar el mail",
+      mensaje: `No se pudo enviar el mail. ${e.message}` ,
       seEnvio: false,
     });
   }
